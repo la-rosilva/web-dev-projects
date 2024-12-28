@@ -1,9 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
+
+
 import Globe from '@/components/ui/globe.jsx'; 
 import Lottie from 'react-lottie';
 import animationData from '@/components/ui/danger_icon.json';
 
+
+
 export function Header() {
+    const [message,setMessage]=useState("");
+    const handleClickHelp=(setMessage)=>{
+        setMessage("Your location has been sent. Help will be delivered soon!");
+        setTimeout(()=>setMessage(""),5000);
+    };
     const defaultOptions = {
         loop: true,
         autoplay: true, 
@@ -26,15 +35,18 @@ export function Header() {
     </h6>
     </div>
 
-  {/* <Globe className=" absolute bottom-1/2 left-1/2  md:absolute md:left-12 md:top-1/3" /> */}
+
 
   <Globe className="absolute left-1/3 translate-y-40 md:left-12 md:top-1/4 md:left-12 md:absolute md:translate-y-5" />
 
   
   <div className="pointer-events-none absolute inset-0 h-full bg-[radial-gradient(circle_at_50%_200%,rgba(0,0,0,0.2),rgba(255,255,255,0))]" />
-  <button className='absolute bottom-10 left-3 flex items-center bg-red-600 rounded-xl px-2 py-1.5 text-white font-bold hover:bg-red-700 transition-all duration-300'>
-  <Lottie options={defaultOptions} height={45} width={45} />
-    HELP ME NOW!
+  <button onClick={()=>handleClickHelp(setMessage)} className='absolute bottom-10 left-3 flex items-center bg-red-600 rounded-xl px-2 py-1.5 text-white text-shadow font-bold hover:bg-red-700 transition-all duration-300'>
+   
+  
+  
+  {message ? (<p >{message}</p>) : (<div><Lottie options={defaultOptions} height={45} width={45} />Help Me Now!</div>)}
+   
   </button>
 </div>
 
