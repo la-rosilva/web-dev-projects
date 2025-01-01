@@ -4,6 +4,9 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import alertIcon from '@/assets/alert.png';
 import checkIcon from '@/assets/check.png';
+import locationIcon from '@/assets/home.png';
+import { PhoneIcon } from '@heroicons/react/24/outline';
+
 
 const markerIcon = new L.Icon({
   iconUrl: alertIcon,
@@ -19,12 +22,25 @@ const helpIcon = new L.Icon({
   popupAnchor: [3, 5],
 });
 
+const NGOIcon=new L.Icon({
+  iconUrl:locationIcon,
+  iconSize:[53,53],
+  iconAnchor:[12,0],
+  popupAnchor:[3,5],
+})
+
+const NGOLocations=[
+  {lat:13.6215, lon:74.7003,name: "Hasthpradha Charitable Trust", icon:NGOIcon, phone:"+91 1234567890"},
+  {lat:13.3499 ,lon:74.7854,name:"Mahamaya Foundation" , icon:NGOIcon, phone:"+91 9087654321"}
+]
+
 const Hotspots = ({ userLocation }) => {
-  const [zoom, setZoom] = useState(2);
-  const [center] = useState([40.712776, -74.005974]); // Default center
+  const [zoom, setZoom] = useState(5);
+  const [center] = useState([20.5937, 78.9629]); // Default center
   const [help, setHelp] = useState(false);
   const [currentIcon, setCurrentIcon] = useState(markerIcon);
   const [locationName,setLocationName]=useState('Fetching location...')
+  const [ngoDetails, setNGODetails] = useState(NGOLocations); 
   const mapRef = useRef();
 
   useEffect(() => {
@@ -35,6 +51,22 @@ const Hotspots = ({ userLocation }) => {
     }
   }, [userLocation]);
 
+  // useEffect(()=>{
+  //   const fetchNGONames=async()=>{
+  //     const updatedLocations=await Promise.all(
+  //       NGOLocations.map(async(location)=>{
+  //         const name=await fetchLocationName(location.lat,location.lon);
+  //         return {...location,name};
+  //       })
+      
+  //     );
+  //     setNGODetails(updatedLocations);
+  //   };
+  //   fetchNGONames();
+  // },[]);
+
+  
+
   const fetchLocationName = async (lat, lon) => {
     try {
       const response = await fetch(
@@ -42,19 +74,19 @@ const Hotspots = ({ userLocation }) => {
       );
       const data = await response.json();
       console.log(data);
-      return data.display_name; // Returns the location name
+      return data.display_name||'location not found' // Returns the location name
     } catch (error) {
       console.error('Error fetching location name:', error);
       return 'Location name not available';
     }
   };
 
-  const handleMarkerClick = () => {
-    if (userLocation) {
+  const handleMarkerClick = (lat,lon) => {
+    if (mapRef.current) {
       const map = mapRef.current.leafletElement;
-      const zoomOnClick = zoom === 2 ? 18 : 2;
+      const zoomOnClick = zoom === 5 ? 18 : 5;
       setZoom(zoomOnClick);
-      map.setView([userLocation.lat, userLocation.lon], zoomOnClick);
+      map.setView([lat,lon], zoomOnClick);
     }
   };
 
@@ -100,11 +132,36 @@ const Hotspots = ({ userLocation }) => {
             url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=34AvhBoP0IkMaDddQxZ9"
             attribution="&copy; <a href='https://www.maptiler.com/copyright/'>MapTiler</a> &copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap contributors</a>"
           />
+          {NGOLocations.map((location,index)=>(
+            <Marker
+            key={index}
+            position={[location.lat,location.lon]}
+            icon={location.icon}
+
+            onClick={()=>handleMarkerClick(location.lat,location.lon)}
+           >
+            <Popup>
+            {location.name}
+            <br />
+            
+            <span style={{color:'#0092ca'}} className='flex items-center mx-2 my-1'> 
+              <PhoneIcon className='w-4 h-4'/>
+
+            {location.phone}
+            </span>
+            
+               
+
+            </Popup>s
+            </Marker>
+          ))}
+
+          
           {userLocation && (
             <Marker
               position={[userLocation.lat, userLocation.lon]}
               icon={currentIcon}
-              onClick={handleMarkerClick}
+              onClick={()=>handleMarkerClick(userLocation.lat,userLocation.lon)}
             >
               <Popup>
                 Latitude: {userLocation.lat}, Longitude: {userLocation.lon}
