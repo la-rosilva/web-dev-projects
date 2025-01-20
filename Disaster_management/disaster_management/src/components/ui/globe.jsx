@@ -4,23 +4,26 @@
 import createGlobe from "cobe";
 import { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
+import { throttle } from "lodash";
+
 
 import { cn } from "@/lib/utils";
 
 const GLOBE_CONFIG = {
-  width: window.innerWidth > 768 ? 1500 : (window.innerWidth > 480 ? 1000 : 500),
-  height: window.innerWidth > 768 ? 1000 : (window.innerWidth > 480 ? 750 : 400),
+  width:1000,
+  height:1000,
   onRender: () => {},
   devicePixelRatio: 2,
   phi: 0,
   theta: 0.3,
-  dark: 0,
+  dark:0,
   diffuse: 0.4,
   mapSamples: 16000,
   mapBrightness: 1.2,
-  baseColor: [1, 1, 1],
-  markerColor: [251 / 255, 100 / 255, 21 / 255],
-  glowColor: [1, 1, 1],
+  baseColor: [1,1,1],
+  markerColor: [1, 0.2, 0],// Between teal and cyan
+
+  glowColor: [1,1,1],
   markers: [
     { location: [14.5995, 120.9842], size: 0.03 },
     { location: [19.076, 72.8777], size: 0.1 },
@@ -50,20 +53,23 @@ export function Globe({ className, config = GLOBE_CONFIG }) {
     }
   };
 
-  const updateMovement = (clientX) => {
+  const updateMovement = throttle((clientX) => {
     if (pointerInteracting.current !== null) {
       const delta = clientX - pointerInteracting.current;
       pointerInteractionMovement.current = delta;
       setR(delta / 200);
     }
-  };
+  },10)
 
   const onRender = useCallback(
     (state) => {
-      if (!pointerInteracting.current) phi += 0.0025;
+      if (!pointerInteracting.current) phi += 0.002;
       state.phi = phi + r;
       state.width = width * 2;
       state.height = width * 2;
+      const globeSizeMultiplier = 2.2;  // Multiply by 1.5 or another factor to increase size
+      state.width = width * globeSizeMultiplier;
+      state.height = width * globeSizeMultiplier;
     },
     [r]
   );
@@ -74,21 +80,23 @@ export function Globe({ className, config = GLOBE_CONFIG }) {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("resize", onResize);
-    onResize();
+  // useEffect(() => {
+  //   window.addEventListener("resize", onResize);
+  //   onResize();
 
-    const globe = createGlobe(canvasRef.current, {
-      ...config,
-      width: width * 2,
-      height: width * 2,
-      onRender,
-    });
+  //   const globe = createGlobe(canvasRef.current, {
+  //     ...config,
+  //     width: width * 2,
+  //     height: width * 2,
+  //     onRender,
+  //   });
 
-    setTimeout(() => (canvasRef.current.style.opacity = "1"));
-    return () => globe.destroy();
-  }, []);
+  //   setTimeout(() => (canvasRef.current.style.opacity = "1"));
+  //   return () => globe.destroy();
+  // }, []);
 
+
+  
   return (
     <div
       className={cn(

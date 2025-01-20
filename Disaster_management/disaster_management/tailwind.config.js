@@ -1,7 +1,12 @@
+const {nextui} = require('@nextui-org/theme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ["class"],
-    content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{ts,tsx,js,jsx}",
+    "./node_modules/@nextui-org/theme/dist/components/(input|form).js"
+  ],
   theme: {
   	extend: {
   		borderRadius: {
@@ -51,21 +56,19 @@ module.exports = {
   				'5': 'hsl(var(--chart-5))'
   			}
   		},
-  		animation: {
-  			rippling: 'rippling var(--duration) ease-out'
-  		},
+  		// animation: {
+  		// 	rippling: 'rippling var(--duration) ease-out'
+  		// },
   		keyframes: {
-  			rippling: {
-  				'0%': {
-  					opacity: '1'
-  				},
-  				'100%': {
-  					transform: 'scale(2)',
-  					opacity: '0'
-  				}
-  			}
-  		}
+  			fadeIn: {
+  				'0%': { opacity: 0, transform: 'translateY(20px)' },
+  				'100%': { opacity: 1, transform: 'translateY(0)' }
+  			},
+  		},
+		animation:{
+			fadeIn:'fadeIn 1s ease-in-out'
+		},
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),nextui()],
 }

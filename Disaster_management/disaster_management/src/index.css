@@ -1,12 +1,86 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
-  font-family: 'Poppins', sans-serif;
+body{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  width:100vw;
+  height:100vh;
+
+  
 }
+
+
+html{
+  scroll-behavior: smooth;
+}
+
+
+
+*{
+  font-family: "Spectral", serif;
+ 
+}
+.text-shadow{
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.box-shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.glass-button {
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Soft shadow for depth */
+  backdrop-filter: blur(20px); /* Blur the background */
+  
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.glass-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly increase opacity on hover */
+  transform:scale(1.05);
+ 
+}/*; Slight zoom effect on hover*/
+
+.bg-mod{
+  background: linear-gradient(178.6deg, rgb(232, 245, 253) 3.3%, rgb(252, 253, 255) 109.6%);
+}
+
+
+
+
+
+.contribute-text {
+  transition: opacity 0.5s ease;
+}
+
+.contribute-text:hover {
+  opacity: 0;
+}
+
+.heart-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+a:hover .heart-icon {
+  opacity: 1;
+}
+a:hover .contribute-text {
+  opacity: 0;
+}
+
+
+
 /* ... */
 
 @layer base {
