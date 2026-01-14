@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      <style>
+        .container{
+            width:400px;
+            padding:20px;
+            margin:50px;
+            background:#f5f5f5;
+            border-radius:15px;
+
+        }
+        #display{
+            width:100%;
+            height:70px;
+          
+            border: 1px solid #333;
+    
+        }
+        .calc-btn{
+            width:80px;
+            height:60px;
+            margin:5px;
+
+        }
+      </style>
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="display">
+           <div>
+            <button class="calc-btn number-btn" id="btn7">7</button>
+            <button class="calc-btn number-btn" id="btn8">8</button>
+            <button class="calc-btn number-btn" id="btn9">9</button>
+            <button class="calc-btn op-btn" id="divBtn">÷</button>
+        </div>
+        <div>
+            <button class="calc-btn number-btn" id="btn4">4</button>
+            <button class="calc-btn number-btn" id="btn5">5</button>
+            <button class="calc-btn number-btn" id="btn6">6</button>
+            <button class="calc-btn op-btn" id="mulBtn">×</button>
+        </div>
+        <div>
+            <button class="calc-btn number-btn" id="btn1">1</button>
+            <button class="calc-btn number-btn" id="btn2">2</button>
+            <button class="calc-btn number-btn" id="btn3">3</button>
+            <button class="calc-btn op-btn" id="subBtn">-</button>
+        </div>
+        <div>
+            <button class="calc-btn number-btn" id="btn0">0</button>
+            <button class="calc-btn op-btn" id="addBtn">+</button>
+            <button class="calc-btn equals-btn" id="equalsBtn">=</button>
+            <button class="calc-btn clear-btn" id="clearBtn">C</button>
+        </div>
+    </div>
+
+    </div>
+  <script>
+$(document).ready(function(){
+    let currentInput = '0';
+    let previousInput = '0';
+    let operator = null;
+    
+   
+    $('.number-btn').click(function(){
+        let num = $(this).text();  
+        if(currentInput === '0') {
+            currentInput = num;    
+        } else {
+            currentInput += num;   
+        }
+        $('#display').val(currentInput);
+    });
+    
+   
+    $('.op-btn').click(function(){
+        previousInput = currentInput;  
+        operator = $(this).text();     
+        currentInput = '0';            
+        $('#display').val('0');
+    });
+
+    $('#equalsBtn').click(function(){
+        let num1 = parseFloat(previousInput);
+        let num2 = parseFloat(currentInput);
+        let result = 0;
+        
+        if(operator === '+') result = num1 + num2;
+        else if(operator === '-') result = num1 - num2;
+        else if(operator === '×') result = num1 * num2;
+        else if(operator === '÷' && num2 !== 0) result = num1 / num2;
+        
+        currentInput = result.toString();
+        $('#display').val(currentInput);
+        operator = null;  
+    });
+    
+
+    $('#clearBtn').click(function(){
+        currentInput = '0';
+        previousInput = '0';
+        operator = null;
+        $('#display').val('0');
+    });
+});
+</script>
+
+    
+</body>
+</html>

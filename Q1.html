@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+ 
+    <title>Table & Image Animation</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        table{
+            border-collapse:collapse;
+        
+        }
+        th,td{
+            border:2px solid black;
+        }
+        .content-wrapper{
+            position:relative;
+            left:0;
+        }
+        .content-wrapper.animated{
+            left:300px;
+         
+        }
+  
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Gaming Laptop</td>
+                <td>$1299</td>
+                <td>12</td>
+            </tr>
+
+            <tr>
+                <td>Wireless mouse</td>
+                <td>$39.99</td>
+                <td>85</td>
+            </tr>
+
+            <tr>
+                <td>Mechanical Keyboard</td>
+                <td>$149</td>
+                <td>32</td>
+            </tr>
+        </tbody>
+    </table>
+    <img id="img1"/>
+     <button class="animate-btn" id="animateBtn">Slide right!</button>
+    <script>
+        $(document).ready(function(){
+            $('table tr:odd').css('background-color','#a1c9d1');
+            $('table tr:even').css('background-color','#d8eaed');
+            $('#img1').attr("src","image.jpg").css('width','250px').css('height','150px').css('margin','5px');
+            $('table, #img1').wrapAll('<div class="content-wrapper" id="contentWrapper"></div>');
+            $('#animateBtn').click(function(){
+            $('#contentWrapper').addClass('animated');
+
+            })
+        });
+
+    </script>
+    
+</body>
+</html>

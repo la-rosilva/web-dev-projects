@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Birthday Card</title>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+        }
+
+        .left {
+            width: 250px;
+        }
+
+        .card {
+            width: 350px;
+            height: 450px;
+            background-color: yellow;
+            border: 4px solid black;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .card h2 {
+            margin-top: 20px;
+        }
+
+        #birthday {
+    margin-top: 20px;
+    width: 120px;  
+   
+}
+
+
+        button {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="left">
+
+        <h5>Choose a background color:</h5>
+        <select id="colorpick">
+            <option value="yellow">Yellow</option>
+            <option value="teal">Teal</option>
+            <option value="white">White</option>
+            <option value="cyan">Cyan</option>
+            <option value="green">Green</option>
+        </select>
+
+        <h5>Choose a font:</h5>
+        <select id="fontpick">
+            <option value="Arial">Arial</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+
+        <h5>Specify a numeric font size:</h5>
+        <input type="number" id="fontsize" value="25">
+
+        <h5>Choose a border style:</h5>
+        <input type="radio" name="border" value="none"> None <br>
+        <input type="radio" name="border" value="double"> Double <br>
+        <input type="radio" name="border" value="solid" checked> Solid
+
+        <br><br>
+
+        <input type="checkbox" id="picture"> Add the default picture
+
+        <h5>Enter the greeting text below:</h5>
+        <input type="text" id="greeting" value="Happy Birthday, and many more">
+
+        <br>
+        <button id="update">Update</button>
+    </div>
+
+
+    <div class="card" id="card">
+        <h2 id="cardText">Happy Birthday, and many more</h2>
+        <img id="birthday" src="Birthday.jpg" alt="birthday-image">
+    </div>
+
+</div>
+
+<script>
+$(document).ready(function(){
+
+    $("#update").click(function(){
+
+       
+        let color = $("#colorpick").val();
+        $("#card").css("background-color", color);
+
+       
+        let font = $("#fontpick").val();
+        $("#cardText").css("font-family", font);
+
+      
+        let size = $("#fontsize").val();
+        $("#cardText").css("font-size", size + "px");
+
+     
+        let border = $("input[name='border']:checked").val();
+        if(border === "none"){
+            $("#card").css("border", "none");
+        } else {
+            $("#card").css("border", "4px " + border + " black");
+        }
+
+    
+        let text = $("#greeting").val();
+        $("#cardText").text(text);
+
+ 
+        if($("#picture").is(":checked")){
+            $("#birthday").show();
+        } else {
+            $("#birthday").hide();
+        }
+
+    });
+
+});
+</script>
+
+</body>
+</html>
